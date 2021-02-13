@@ -24,7 +24,7 @@ public class JWTUtil {
 
         Map<String,Object> claims = new HashMap<>();
         claims.put("username", user.getUserName());
-        claims.put("email", user.getId());
+        claims.put("id", user.getId());
         claims.put("firstName", user.getFirstName());
         claims.put("lastName", user.getLastName());
 
@@ -59,12 +59,13 @@ public class JWTUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails){
-        final String username = extractUsername(token);
+        final String currentUser = extractAllClaims(token).get("id").toString();
 
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (currentUser.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {
+
         return extractExpiration(token).before(new Date());
     }
 
