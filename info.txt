@@ -1,0 +1,7 @@
+
+1. add dependencies
+    -springdoc-openapi-security
+    -jwttoken
+    -springd
+2. create application.properties or yml under resources
+3. remove converter package
