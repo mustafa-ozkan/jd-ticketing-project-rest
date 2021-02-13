@@ -11,4 +11,8 @@
         -   api doesn't need formlogin part so remove SecurityConfig.class
         - add WebsecurityConfig.class
 
+6. We have a baseentityListener
+    - @prepersist
+    - @preupdate
+
 
