@@ -5,3 +5,10 @@
     -springd
 2. create application.properties or yml under resources
 3. remove converter package
+4. add responsewrapper.class to entity package
+5. first start with authentication
+    - start with config file(initiating your security)
+        -   api doesn't need formlogin part so remove SecurityConfig.class
+        - add WebsecurityConfig.class
+
+
