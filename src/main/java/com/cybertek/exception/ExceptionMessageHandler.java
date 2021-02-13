@@ -1,5 +1,6 @@
 package com.cybertek.exception;
 
+import com.cybertek.annotation.DefaultExceptionMessage;
 import com.cybertek.dto.DefaultExceptionMessageDto;
 import com.cybertek.entity.ResponseWrapper;
 import org.springframework.core.Ordered;
@@ -48,7 +49,7 @@ public class ExceptionMessageHandler {
         return new ResponseEntity<>(ResponseWrapper.builder().success(false).message("Action failed: An error occurred!").code(HttpStatus.INTERNAL_SERVER_ERROR.value()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     private Optional<DefaultExceptionMessageDto> getMessageFromAnnotation(Method method) {
-        com.cybertek.annotation.DefaultExceptionMessage defaultExceptionMessage = method.getAnnotation(com.cybertek.annotation.DefaultExceptionMessage.class);
+        DefaultExceptionMessage defaultExceptionMessage = method.getAnnotation(DefaultExceptionMessage.class);
         if (defaultExceptionMessage != null) {
             DefaultExceptionMessageDto defaultExceptionMessageDto = DefaultExceptionMessageDto
                     .builder()

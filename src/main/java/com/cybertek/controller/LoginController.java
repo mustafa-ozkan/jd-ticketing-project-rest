@@ -1,5 +1,6 @@
 package com.cybertek.controller;
 
+import com.cybertek.annotation.DefaultExceptionMessage;
 import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.ResponseWrapper;
 import com.cybertek.entity.User;
@@ -33,6 +34,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/authenticate")
+	@DefaultExceptionMessage(defaultMessage = "Bad Credentials")
 	public ResponseEntity<ResponseWrapper> doLogin(@RequestBody AuthenticationRequest authenticationRequest) throws TicketingProjectException {
 
 		String password = authenticationRequest.getPassword();
