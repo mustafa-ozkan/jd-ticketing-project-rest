@@ -1,7 +1,6 @@
 package com.cybertek.filter;
 
 import com.cybertek.entity.User;
-import com.cybertek.enums.UserState;
 import com.cybertek.service.SecurityService;
 import com.cybertek.util.JWTUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,6 +56,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private boolean checkIfUserIsValid(String username) {
         User currentUser = securityService.loadUser(username);
-        return currentUser != null && currentUser.getIsVerified() && currentUser.getState() == UserState.ACTIVE;
+        return currentUser != null && currentUser.isEnabled();
     }
 }
