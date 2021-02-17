@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] permittedUrls = {
             "/authenticate",
             "/create-user",
-            "/api/p1/**",
+            "/confirmation",
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/configuration/security",
