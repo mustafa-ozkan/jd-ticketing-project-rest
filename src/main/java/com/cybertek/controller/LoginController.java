@@ -16,13 +16,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Tag(name = "Authentication Controller", description = "Authenticate API")
@@ -75,6 +73,23 @@ public class LoginController {
 	private ResponseEntity<ResponseWrapper> doRegister(@RequestBody UserDTO userDTO) throws TicketingProjectException {
 		UserDTO createdUser = userService.save(userDTO);
 		sendEmail(createEmail(createdUser));
+
+		return ResponseEntity
+				.ok(new ResponseWrapper("User has been created", createdUser));
+
+	}
+
+	@DefaultExceptionMessage(defaultMessage = "Failed to cionfirm email, please try again!")
+	@PostMapping("/confirmation")
+	@Operation(summary = "Confirm new account")
+	public ResponseEntity<ResponseWrapper>  confirmEmail(@RequestParam("token") String token) throws TicketingProjectException {
+		ConfirmationToken confirmationToken = confirmationTokenService.readByToken(token);
+
+		UserDTO confirmUser = userService.confirm(confirmationToken.getUser());
+
+		confirmationTokenService.delete(confirmationToken);
+
+		return ResponseEntity.ok(new ResponseWrapper("User has been confirmed!", confirmUser));
 	}
 
 	private MailDTO createEmail(UserDTO userDTO){
@@ -94,6 +109,17 @@ public class LoginController {
 				.message("To confirm your account, please click here:")
 				.url(BASE_URL+"/confirmation?token=")
 				.build();
+	}
+
+	private void sendEmail(MailDTO mailDTO){
+//convert created mail message to spring mail message
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+		mailMessage.setTo(mailDTO.getEmailTo());
+		mailMessage.setSubject(mailDTO.getSubject());
+		mailMessage.setText(mailDTO.getMessage()+mailDTO.getUrl()+mailDTO.getToken());
+
+		confirmationTokenService.sendEmail(mailMessage);
 	}
 
 

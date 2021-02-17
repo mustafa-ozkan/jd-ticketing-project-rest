@@ -146,6 +146,11 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserDTO confirm(User user) {
+        return null;
+    }
+
     //hard delete
     public void deleteByUserName(String username) {
         userRepository.deleteByUserName(username);
