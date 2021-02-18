@@ -9,24 +9,27 @@ import com.cybertek.enums.Status;
 import java.util.List;
 
 public interface TaskService {
-    //I need crud operators
-    TaskDTO findById(Long taskId);
+
+    TaskDTO findById(Long id);
     List<TaskDTO> listAllTasks();
-    Task save(TaskDTO taskDto);
-    void update(TaskDTO taskDTO);
-    void delete(Long taskId);
+    Task save(TaskDTO dto);
+    void update(TaskDTO dto);
+    void delete(long id);
 
     int totalNonCompletedTasks(String projectCode);
     int totalCompletedTasks(String projectCode);
-    void deleteByProject(ProjectDTO projectDTO);
-    List<TaskDTO> listAllTaskByProject(ProjectDTO projectDTO);
-    List<TaskDTO> listAllTasksByStatusIsNot(Status taskStatus);
+
+    void deleteByProject(ProjectDTO project);
+
+    List<TaskDTO> listAllByProject(ProjectDTO project);
+
+    List<TaskDTO> listAllTasksByStatusIsNot(Status status);
+
     List<TaskDTO> listAllTasksByProjectManager();
 
-    List<TaskDTO> readAllTasksByEmployee(User employee);
-    void updateTaskStatus(TaskDTO taskDTO);
+    void updateStatus(TaskDTO dto);
 
-    List<TaskDTO> listAllTasksByStatus(Status taskStatus);
+    List<TaskDTO> listAllTasksByStatus(Status status);
 
-
+    List<TaskDTO> readAllByEmployee(User assignedEmployee);
 }
