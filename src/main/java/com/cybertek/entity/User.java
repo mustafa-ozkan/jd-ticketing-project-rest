@@ -1,6 +1,8 @@
 package com.cybertek.entity;
 
 import com.cybertek.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,11 +17,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 @Where(clause = "is_deleted=false")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"},ignoreUnknown = true)
 public class User extends BaseEntity {
 
     private String firstName;
     private String lastName;
     private String userName;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passWord;
     private boolean enabled;
     private String phone;
@@ -27,14 +32,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    //lazy is for when ever we need it do it
-    //security doesn't like it so we remove it
-//    @ManyToOne(fetch = FetchType.LAZY)
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-
-
-
 
 }
