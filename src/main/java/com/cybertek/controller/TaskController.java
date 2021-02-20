@@ -4,6 +4,7 @@ import com.cybertek.annotation.DefaultExceptionMessage;
 import com.cybertek.dto.TaskDTO;
 import com.cybertek.entity.ResponseWrapper;
 import com.cybertek.enums.Status;
+import com.cybertek.exception.TicketingProjectException;
 import com.cybertek.service.ProjectService;
 import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
@@ -44,13 +45,29 @@ public class TaskController {
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
     @Operation(summary = "Read all tasks by project manager")
     @PreAuthorize("hasAuthority('Manager')")
-    public ResponseEntity<ResponseWrapper> readAllByProjectManager(){
+    public ResponseEntity<ResponseWrapper> readAllByProjectManager() throws TicketingProjectException {
         List<TaskDTO> taskDTOList = taskService.listAllTasksByProjectManager();
-        return ResponseEntity.ok(new ResponseWrapper("Succwssfully retrieved tasks by project manager",taskDTOList));
+        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved tasks by project manager",taskDTOList));
     }
 
+    @GetMapping("/{id}}")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
+    @Operation(summary = "Read task by id")
+    @PreAuthorize("hasAnyAuthority('Manager','Employee')")
+    public ResponseEntity<ResponseWrapper> readById(@PathVariable("id") Long id) throws TicketingProjectException {
+        TaskDTO currentTask = taskService.findById(id);
+        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved task",currentTask));
 
+    }
 
+    @PostMapping
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
+    @Operation(summary = "Create a new task")
+    @PreAuthorize("hasAuthority('Manager')")
+    public ResponseEntity<ResponseWrapper> create(@RequestBody TaskDTO task) {
+        TaskDTO createdTask = taskService.save(task);
+        return ResponseEntity.ok(new ResponseWrapper("Successfully task created",createdTask));
+    }
 
 
 

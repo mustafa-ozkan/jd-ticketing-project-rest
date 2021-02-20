@@ -13,7 +13,7 @@ public interface TaskService {
 
     TaskDTO findById(Long id) throws TicketingProjectException;
     List<TaskDTO> listAllTasks();
-    Task save(TaskDTO dto);
+    TaskDTO save(TaskDTO dto);
     void update(TaskDTO dto);
     void delete(long id);
 
