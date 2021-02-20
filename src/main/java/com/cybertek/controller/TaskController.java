@@ -69,7 +69,14 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseWrapper("Successfully task created",createdTask));
     }
 
-
+    @DeleteMapping
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
+    @Operation(summary = "Delete a task")
+    @PreAuthorize("hasAuthority('Manager')")
+    public ResponseEntity<ResponseWrapper> delete(@PathVariable("id") Long id) {
+        taskService.delete(id);
+        return ResponseEntity.ok(new ResponseWrapper("Successfully deleted task"));
+    }
 
 
 
