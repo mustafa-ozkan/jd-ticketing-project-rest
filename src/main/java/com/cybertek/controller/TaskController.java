@@ -35,7 +35,7 @@ public class TaskController {
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
     @Operation(summary = "Read all tasks")
     @PreAuthorize("hasAuthority('Manager')")
-    public ResponseEntity<ResponseWrapper> readAll(){
+    public ResponseEntity<ResponseWrapper> readAll() {
 
 
         return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved all tasks", taskService.listAllTasks()));
@@ -47,7 +47,7 @@ public class TaskController {
     @PreAuthorize("hasAuthority('Manager')")
     public ResponseEntity<ResponseWrapper> readAllByProjectManager() throws TicketingProjectException {
         List<TaskDTO> taskDTOList = taskService.listAllTasksByProjectManager();
-        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved tasks by project manager",taskDTOList));
+        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved tasks by project manager", taskDTOList));
     }
 
     @GetMapping("/{id}}")
@@ -56,7 +56,7 @@ public class TaskController {
     @PreAuthorize("hasAnyAuthority('Manager','Employee')")
     public ResponseEntity<ResponseWrapper> readById(@PathVariable("id") Long id) throws TicketingProjectException {
         TaskDTO currentTask = taskService.findById(id);
-        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved task",currentTask));
+        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved task", currentTask));
 
     }
 
@@ -66,10 +66,10 @@ public class TaskController {
     @PreAuthorize("hasAuthority('Manager')")
     public ResponseEntity<ResponseWrapper> create(@RequestBody TaskDTO task) {
         TaskDTO createdTask = taskService.save(task);
-        return ResponseEntity.ok(new ResponseWrapper("Successfully task created",createdTask));
+        return ResponseEntity.ok(new ResponseWrapper("Successfully task created", createdTask));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
     @Operation(summary = "Delete a task")
     @PreAuthorize("hasAuthority('Manager')")
@@ -78,14 +78,14 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseWrapper("Successfully deleted task"));
     }
 
-
-
-
-
-
-
-
-
-
-
+    @PutMapping
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
+    @Operation(summary = "Update a task")
+    @PreAuthorize("hasAuthority('Manager')")
+    public ResponseEntity<ResponseWrapper> update(@RequestBody TaskDTO task) throws TicketingProjectException {
+        TaskDTO updatedTask = taskService.update(task);
+        return ResponseEntity.ok(new ResponseWrapper("Successfully task created", updatedTask));
     }
+
+
+}
