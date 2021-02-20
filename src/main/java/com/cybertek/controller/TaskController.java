@@ -73,7 +73,7 @@ public class TaskController {
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
     @Operation(summary = "Delete a task")
     @PreAuthorize("hasAuthority('Manager')")
-    public ResponseEntity<ResponseWrapper> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseWrapper> delete(@PathVariable("id") Long id) throws TicketingProjectException {
         taskService.delete(id);
         return ResponseEntity.ok(new ResponseWrapper("Successfully deleted task"));
     }
@@ -84,7 +84,16 @@ public class TaskController {
     @PreAuthorize("hasAuthority('Manager')")
     public ResponseEntity<ResponseWrapper> update(@RequestBody TaskDTO task) throws TicketingProjectException {
         TaskDTO updatedTask = taskService.update(task);
-        return ResponseEntity.ok(new ResponseWrapper("Successfully task created", updatedTask));
+        return ResponseEntity.ok(new ResponseWrapper("Successfully updated", updatedTask));
+    }
+
+    @GetMapping("/employee")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
+    @Operation(summary = "Read all non complete tasks")
+    @PreAuthorize("hasAuthority('Employee')")
+    public ResponseEntity<ResponseWrapper> employeeReadAllNonCompleteTask() throws TicketingProjectException {
+        List<TaskDTO> tasks = taskService.listAllTasksByStatusIsNot(Status.COMPLETE);
+        return ResponseEntity.ok(new ResponseWrapper("Successfully read non completed current user tasks", tasks));
     }
 
 
