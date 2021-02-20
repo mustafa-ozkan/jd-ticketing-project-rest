@@ -40,6 +40,14 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved all tasks", taskService.listAllTasks()));
     }
 
+    @GetMapping("/project-manager")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
+    @Operation(summary = "Read all tasks by project manager")
+    @PreAuthorize("hasAuthority('Manager')")
+    public ResponseEntity<ResponseWrapper> readAllByProjectManager(){
+        List<TaskDTO> taskDTOList = taskService.listAllTasksByProjectManager();
+        return ResponseEntity.ok(new ResponseWrapper("Succwssfully retrieved tasks by project manager",taskDTOList));
+    }
 
 
 
@@ -53,4 +61,7 @@ public class TaskController {
 
 
 
-}
+
+
+
+    }
