@@ -27,9 +27,9 @@ public interface TaskService {
 
     List<TaskDTO> listAllTasksByProjectManager() throws TicketingProjectException;
 
-    void updateStatus(TaskDTO dto);
+    TaskDTO updateStatus(TaskDTO dto) throws TicketingProjectException;
 
-    List<TaskDTO> listAllTasksByStatus(Status status);
+//    List<TaskDTO> listAllTasksByStatus(Status status);
 
     List<TaskDTO> readAllByEmployee(User assignedEmployee);
 }
